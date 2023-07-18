@@ -11,7 +11,7 @@ const tags = document.querySelector('.tags')
 
 // Récupération des différentes recettes via un fetch
 async function getRecipes() {
-    const res = await fetch("../data/recipes.json")
+    const res = await fetch("https://m-graff.github.io/LesPetitsPlats-P7/data/recipes.json")
     return await res.json()
 }
 
@@ -55,6 +55,9 @@ function displayIngredientsSelect() {
         'Recherchez vos ingrédients',
         'tri-ingredients',
         (ingredient) => {
+            if(selectedIngredients.includes(ingredient)){
+                return
+            }
             selectedIngredients.push(ingredient)
             const listElement = document.createElement('li')
             listElement.innerText = ingredient
@@ -104,6 +107,9 @@ function displayAppliancesSelect() {
         'Recherchez vos appareils',
         'tri-appareils',
         (appliance) => {
+            if(selectedAppliances.includes(appliance)){
+                return
+            }
             selectedAppliances.push(appliance)
             const listElement = document.createElement('li')
             listElement.innerText = appliance
@@ -155,6 +161,9 @@ function displayUstensilsSelect() {
         'Recherchez vos ustensiles',
         'tri-ustensiles',
         (ustensil) => {
+            if(selectedUstensiles.includes(ustensil)){
+                return
+            }
             selectedUstensiles.push(ustensil)
             const listElement = document.createElement('li')
             listElement.innerText = ustensil
@@ -199,6 +208,10 @@ searchBarInput.addEventListener('input', search);
 function searchByInput(recipe) {
     // Étape 1 : Récupérer l'entrée de recherche 
     const searchInput = searchBarInput.value;
+
+    if(searchInput.length < 3){
+        return true
+    }
 
     // Étape 2 : Convertir l'entrée de recherche en minuscules
     const searchTerm = searchInput.toLowerCase();
@@ -263,6 +276,11 @@ function search() {
 
     // Vider le contenu précédent de la section des cartes de recettes
     recipeSection.innerHTML = '';
+
+    if(filteredRecipes.length === 0){
+        recipeSection.innerText = "Aucune recette n'a été trouvée"
+        return
+    }
 
     // Pour chaque recette filtrée, générer une carte de recette et l'ajouter à la section des cartes de recettes
     filteredRecipes.forEach((recipe) => {

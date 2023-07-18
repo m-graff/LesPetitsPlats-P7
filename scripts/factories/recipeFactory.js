@@ -1,6 +1,6 @@
 // Fonction de création de la card recette comprenant toutes leurs informations
 function recipeFactory(recipe) {
-    const { name, ingredients, time, description, appliance, ustensils } = recipe;
+    const { name, ingredients, time, description } = recipe;
 
     // Création du DOM de la carte recette
     function getRecipesCardDOM() {

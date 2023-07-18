@@ -67,7 +67,7 @@ main {
     list-style: none;
     margin-top: 2%;
     margin-bottom: 2%;
-    
+    padding: 0;
     /*color: white;*/
 }
 
@@ -86,7 +86,7 @@ main {
 }
 
 .tags i {
-    color: red;
+    color: white;
     font-size: 18px;
     display: block;
     width: 18px;
@@ -108,15 +108,23 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 15px;
+    padding: 20px 25px;
     border: 0;
     border-radius: 5px 5px 5px 5px;
     font-weight: bold;
-    margin-right: 15px;
-    /*min-width: 170px;
-    max-width: max-content;*/
+    margin-right: 30px;
     color: white;
     width: 100%;
+    text-align: left;
+}
+
+.listbox-options {
+    margin-top: -3px;
+}
+
+/* A MODIFIER // OU SUPPRIMER */
+.listbox-options li:hover {
+    background-color: #68D9A4;
 }
 
 .tri-ingredients button {
@@ -186,6 +194,7 @@ main {
 .listbox-options.active {
     /*grid-template-columns: repeat(3, 1fr);
     gap: 5px;*/
+    border-radius: 0 0 5px 5px;
 }
 
 .listbox-options li {
@@ -251,9 +260,8 @@ main {
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
     overflow: hidden;
-
-    /* TEST AJOUT IMG */
-    background-image: url('/assets/card-test.jpg');
+    background: url('https://m-graff.github.io/LesPetitsPlats-P7/assets/card-test.jpg') no-repeat center;
+    background-size: cover;
 }
 
 .card-img img {
