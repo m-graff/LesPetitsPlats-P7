@@ -290,11 +290,6 @@ function search() {
     });
 }
 
-/*
-Conclusion des tests algorithmiques 
-Filter est plus lisible (on in crémente pas sur des boucles)
-Le for est plus rapide 
-*/
 
 /*
 // Méthode 2 - BOUCLE FOR : Fonction effectuant une recherche globale sur les recettes en fonction des critères de recherche
@@ -332,11 +327,6 @@ function search() {
 */
 
 
-/*
-Conclusion des tests algorithmiques 
-Filter est plus lisible (on in crémente pas sur des boucles), mais plus lent
-Le for est plus rapide 
-*/
 
 /* Création de la nouvelle branche pour l'algorithme 2 
 Enlever la méthode 1 et décommenter la méthode 2

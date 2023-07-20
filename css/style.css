@@ -99,6 +99,12 @@ main {
     gap: 20px;
 }
 
+@media screen and (max-width: 764px)  {
+    #listboxs {
+        flex-direction: column;
+    }
+}
+
 .listbox-div {
     width: 100%;
 }
@@ -124,7 +130,7 @@ main {
 
 /* A MODIFIER // OU SUPPRIMER */
 .listbox-options li:hover {
-    background-color: #68D9A4;
+    background-color: #3d403f;
 }
 
 .tri-ingredients button {
@@ -158,7 +164,6 @@ main {
 
 .listbox-input {
     display: none;
-    /*width: 18vw;*/
     color: white;
     border: 0;
     background-color: transparent;
@@ -178,7 +183,6 @@ main {
     transform: rotate(180deg);
 }
 
-
 .listbox-options {
     display: none;
     padding: 0;
@@ -192,8 +196,6 @@ main {
 }
 
 .listbox-options.active {
-    /*grid-template-columns: repeat(3, 1fr);
-    gap: 5px;*/
     border-radius: 0 0 5px 5px;
 }
 
@@ -210,37 +212,9 @@ main {
     width: 100%
 }
 
-
-
-/*
-.tri-ingredients ul, .tri-appareils ul, .tri-ustensiles ul {
-    padding: 0;
-    list-style: none;
-    height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* CARD RECETTE */
 #cards-container {
     margin: 40px auto;
-    width: 100%;
-    max-width: 1240px;
     display: grid;
     column-gap: 2rem;
     row-gap: 2rem;
@@ -289,7 +263,6 @@ main {
     font-weight: 500;
     font-size: 1rem;
     overflow: hidden;
-    /* white-space: nowrap; */
     text-overflow: ellipsis;
 }
 
@@ -332,7 +305,6 @@ main {
     font-family: 'Lato', sans-serif;
     font-size: .8rem;
     line-height: 1rem;
-
     display: flex;
     flex-wrap: wrap;
 }
