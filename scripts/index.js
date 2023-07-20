@@ -267,6 +267,7 @@ function search() {
             searchByInput(recipe);
     });
 
+    // Définir les données des listboxs en fonction des ingrédients, ustensiles et appareils des recettes filtrées
     selects[0].setData(getIngredientsFromRecipes(filteredRecipes))
     selects[1].setData(getAppliancesFromRecipes(filteredRecipes))
     selects[2].setData(getUstensilsFromRecipes(filteredRecipes))
@@ -277,6 +278,7 @@ function search() {
     // Vider le contenu précédent de la section des cartes de recettes
     recipeSection.innerHTML = '';
 
+    // Si aucune recette n'a été trouvée, afficher un message
     if(filteredRecipes.length === 0){
         recipeSection.innerText = "Aucune recette n'a été trouvée"
         return
@@ -290,7 +292,6 @@ function search() {
     });
 }
 
-
 /*
 // Méthode 2 - BOUCLE FOR : Fonction effectuant une recherche globale sur les recettes en fonction des critères de recherche
 function search() {
@@ -301,10 +302,10 @@ function search() {
 
         // Vérifier si la recette satisfait tous les critères de recherche
         if (
-            searchByIngredients(recipe) &&
-            searchByAppliances(recipe) &&
-            searchByUstensils(recipe) &&
-            searchByInput(recipe)
+            searchByIngredients(recipe) && // La recette contient tous les ingrédients recherchés ?
+            searchByAppliances(recipe) && // La recette utilise tous les appareils recherchés ?
+            searchByUstensils(recipe) && // La recette utilise tous les ustensiles recherchés ?
+            searchByInput(recipe) // La recette contient toutes les entrées recherchées ?
         ) {
             // Ajouter la recette filtrée au tableau des recettes filtrées
             filteredRecipes.push(recipe);
@@ -324,7 +325,7 @@ function search() {
         recipeSection.appendChild(recipeCardDOM);
     });
 }
-*/
+
 
 
 
