@@ -257,42 +257,7 @@ function searchByUstensils(recipe) {
         .length === selectedUstensiles.length;
 }
 
-// Méthode 1 - FILTER : Fonction effectuant une recherche globale sur les recettes en fonction des critères de recherche
-function search() {
-    // Filtrer les recettes en utilisant les fonctions de recherche spécifiques
-    const filteredRecipes = recipes.filter((recipe) => {
-        return searchByIngredients(recipe) &&
-            searchByAppliances(recipe) &&
-            searchByUstensils(recipe) &&
-            searchByInput(recipe);
-    });
 
-    // Définir les données des listboxs en fonction des ingrédients, ustensiles et appareils des recettes filtrées
-    selects[0].setData(getIngredientsFromRecipes(filteredRecipes))
-    selects[1].setData(getAppliancesFromRecipes(filteredRecipes))
-    selects[2].setData(getUstensilsFromRecipes(filteredRecipes))
-
-    // Récupérer l'élément HTML représentant la section des cartes de recettes
-    const recipeSection = document.getElementById('cards-container');
-
-    // Vider le contenu précédent de la section des cartes de recettes
-    recipeSection.innerHTML = '';
-
-    // Si aucune recette n'a été trouvée, afficher un message
-    if(filteredRecipes.length === 0){
-        recipeSection.innerText = "Aucune recette n'a été trouvée"
-        return
-    }
-
-    // Pour chaque recette filtrée, générer une carte de recette et l'ajouter à la section des cartes de recettes
-    filteredRecipes.forEach((recipe) => {
-        const recipeTemplate = recipeFactory(recipe);
-        const recipeCardDOM = recipeTemplate.getRecipesCardDOM();
-        recipeSection.appendChild(recipeCardDOM);
-    });
-}
-
-/*
 // Méthode 2 - BOUCLE FOR : Fonction effectuant une recherche globale sur les recettes en fonction des critères de recherche
 function search() {
     let filteredRecipes = [];
