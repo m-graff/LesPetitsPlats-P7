@@ -15,6 +15,7 @@ async function getRecipes() {
     return await res.json()
 }
 
+// Fonction d'initialisation
 async function init() {
     recipes = await getRecipes();
     displayRecipes();
@@ -27,38 +28,51 @@ init();
 // Affichage des Cards recette via la factory recipeFactory
 function displayRecipes() {
     const recipeSection = document.getElementById('cards-container');
-    recipeSection.innerHTML = ''
+    recipeSection.innerHTML = '';
 
+    // Itération sur chaque recette dans le tableau 'recipes'
     recipes.forEach((recipe) => {
+        // Création d'un modèle de recette en utilisant la factory 'recipeFactory' 
         const recipeTemplate = recipeFactory(recipe);
+        // Appel de la fonction 'getRecipesCardDOM()' du modèle de recette pour obtenir le DOM de la card de recette
         const recipeCardDOM = recipeTemplate.getRecipesCardDOM();
+        // Ajout de la card de recette à la section des cards de recette pour son affichage
         recipeSection.appendChild(recipeCardDOM);
-    })
+    });
 }
 
-function getIngredientsFromRecipes(recipes){
+// Fonction prenant une liste de recettes et renvoiant une liste de tous les ingrédients de ces recettes, en minuscule.
+function getIngredientsFromRecipes(recipes) {
+    // La méthode `map` transforme chaque recette en un tableau d'ingrédients normalisés (en minuscules)
     const ingredients = recipes
         .map(recipe =>
+            // La méthode `map` extrait le nom de chaque ingrédient et le normalise en minuscules
             recipe.ingredients
                 .map(ingredient => ingredient.ingredient.toLowerCase())
-        ).flat()
-    return Array.from(new Set(ingredients))
+        ).flat(); // La méthode `flat` aplatit le tableau de tableaux d'ingrédients en un seul tableau
+
+    // Création d'un nouvel ensemble (`Set`) à partir du tableau `ingredients`, ce qui élimine automatiquement les doublons, avant d'utiliser `Array.from()` pour convertir l'ensemble en un tableau contenant les ingrédients uniques normalisés
+    return Array.from(new Set(ingredients));
 }
 
-// Listbox : Récupération et création de la liste d'ingrédients 
+// Listbox : Récupération et création de la liste déroulante d'ingrédients 
 function displayIngredientsSelect() {
     const ingredients = getIngredientsFromRecipes(recipes)
+    // Création d'un nouvel objet 'Select' pour gérer les fonctionnalités de la liste déroulante d'ingrédients
     const select = new Select(
         Array.from(new Set(ingredients)),
         'ingredient',
         'Ingrédient',
         'Recherchez vos ingrédients',
         'tri-ingredients',
+        // Vérification pour éviter la sélection plusieurs fois d'un même ingrédient
         (ingredient) => {
             if(selectedIngredients.includes(ingredient)){
                 return
             }
-            selectedIngredients.push(ingredient)
+            selectedIngredients.push(ingredient) // Ajout de l'ingrédient sélectionné à la liste des ingrédients sélectionnés
+
+            // Création d'un nouvel élément <li> (tag) pour représenter l'ingrédient sélectionné dans une liste de tags
             const listElement = document.createElement('li')
             listElement.innerText = ingredient
             listElement.style.background = "#3282F7"
@@ -66,14 +80,15 @@ function displayIngredientsSelect() {
             listElementClose.classList.add("fa", "fa-times-circle")
             listElement.appendChild(listElementClose)
             tags.appendChild(listElement)
-            search()
+            search() // Appel de la fonction de recherche pour filtrer les recettes en fonction des ingrédients sélectionnés
 
-            // Evènement filtrant les options de la liste déroulante en fonction de la saisie de l'input
+            // Gestion de l'événement de clic pour supprimer l'ingrédient sélectionné
             listElement.addEventListener('click', () => {
+                // Filtrage pour supprimer l'ingrédient sélectionné de la liste des ingrédients sélectionnés
                 selectedIngredients = selectedIngredients
                     .filter(selectedIngredient => selectedIngredient !== ingredient)
                 listElement.remove()
-                search()
+                search() // Réexécution de la fonction de recherche pour mettre à jour les recettes affichées
             })
         },
         // Gestion de l'ouverture Listbox, faisant en sorte de ne permettre l'affichage que d'une seule liste déroulante à la fois
@@ -88,29 +103,38 @@ function displayIngredientsSelect() {
         }
     )
     selects.push(select)
+    // Ajout de la liste déroulante d'ingrédients au DOM
     const triIngredients = document.querySelector('.tri-ingredients')
     triIngredients.appendChild(select.render())
 }
 
-function getAppliancesFromRecipes(recipes){
-    const appliances = recipes.map(recipe => recipe.appliance.toLowerCase())
-    return Array.from(new Set(appliances))
+// Fonction prenant une liste de recettes et renvoiant une liste de tous les appareils de ces recettes, en minuscule.
+function getAppliancesFromRecipes(recipes) {
+    // La méthode `map` extrait l'appareil de chaque recette et le normaliser en minuscules
+    const appliances = recipes.map(recipe => recipe.appliance.toLowerCase());
+
+    // Création d'un nouvel ensemble (`Set`) à partir du tableau `appliances`, ce qui élimine automatiquement les doublons avant d'utiliser `Array.from()` pour convertir l'ensemble en un tableau contenant les appareils uniques normalisés
+    return Array.from(new Set(appliances));
 }
 
-// Listbox : Récupération et création de la liste d'appareils
+// Listbox : Récupération et création de la liste déroulante d'appareils
 function displayAppliancesSelect() {
     const appliances = getAppliancesFromRecipes(recipes)
+    // Création d'un nouvel objet 'Select' pour gérer les fonctionnalités de la liste déroulante d'appareils
     const select = new Select(
         Array.from(new Set(appliances)),
         'appareil',
         'Appareils',
         'Recherchez vos appareils',
         'tri-appareils',
+        // Vérification pour éviter la sélection plusieurs fois d'un même appareil
         (appliance) => {
             if(selectedAppliances.includes(appliance)){
                 return
             }
-            selectedAppliances.push(appliance)
+            selectedAppliances.push(appliance) // Ajout de l'appareil sélectionné à la liste des appareils sélectionnés
+
+            // Création d'un nouvel élément <li> (tag) pour représenter l'appareil sélectionné dans une liste de tags
             const listElement = document.createElement('li')
             listElement.innerText = appliance
             listElement.style.background = "#68D9A4"
@@ -118,14 +142,15 @@ function displayAppliancesSelect() {
             listElementClose.classList.add("fa", "fa-times-circle")
             listElement.appendChild(listElementClose)
             tags.appendChild(listElement)
-            search()
+            search() // Appel de la fonction de recherche pour filtrer les recettes en fonction des appareils sélectionnés
 
-            // Evènement filtrant les options de la liste déroulante en fonction de la saisie de l'input
+            // Gestion de l'événement de clic pour supprimer l'appareil sélectionné
             listElement.addEventListener('click', () => {
+                // Filtrage pour supprimer l'appareil sélectionné de la liste des appareils sélectionnés
                 selectedAppliances = selectedAppliances
                     .filter(selectedAppliance => selectedAppliance !== appliance)
                 listElement.remove()
-                search()
+                search() // Réexécution de la fonction de recherche pour mettre à jour les recettes affichées
             })
         },
         // Gestion de l'ouverture Listbox, faisant en sorte de ne permettre l'affichage que d'une seule liste déroulante à la fois
@@ -140,31 +165,40 @@ function displayAppliancesSelect() {
         }
     )
     selects.push(select)
+    // Ajout de la liste déroulante d'appareils au DOM
     const triIngredients = document.querySelector('.tri-appareils')
     triIngredients.appendChild(select.render())
 }
 
-function getUstensilsFromRecipes(recipes){
+// Fonction prenant une liste de recettes et renvoiant une liste de tous les ustensiles de ces recettes, en minuscule.
+function getUstensilsFromRecipes(recipes) {
+    // La méthode `map` transforme chaque recette en un tableau d'ustensiles normalisés (en minuscules)
     const ustensils = recipes
         .map(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
-        .flat()
-    return Array.from(new Set(ustensils))
+        .flat();
+
+    // Création d'un nouvel ensemble (`Set`) à partir du tableau `ustensils`, ce qui élimine automatiquement les doublons avant d'utiliser `Array.from()` pour convertir l'ensemble en un tableau contenant les ustensiles uniques normalisés
+    return Array.from(new Set(ustensils));
 }
 
-// Listbox : Récupération et création de la liste d'ustensiles 
+// Listbox : Récupération et création de la liste déroulante d'ustensiles 
 function displayUstensilsSelect() {
     const ustensils = getUstensilsFromRecipes(recipes)
+    // Création d'un nouvel objet 'Select' pour gérer les fonctionnalités de la liste déroulante d'ustensiles
     const select = new Select(
         Array.from(new Set(ustensils)),
         'ustensil',
         'Ustensiles',
         'Recherchez vos ustensiles',
         'tri-ustensiles',
+        // Vérification pour éviter la sélection plusieurs fois d'un même ustensile
         (ustensil) => {
             if(selectedUstensiles.includes(ustensil)){
                 return
             }
-            selectedUstensiles.push(ustensil)
+            selectedUstensiles.push(ustensil) // Ajout de l'ustensile sélectionné à la liste des ustensiles sélectionnés
+
+            // Création d'un nouvel élément <li> (tag) pour représenter l'ustensile sélectionné dans une liste de tags
             const listElement = document.createElement('li')
             listElement.innerText = ustensil
             listElement.style.background = "#ED6454"
@@ -172,14 +206,14 @@ function displayUstensilsSelect() {
             listElementClose.classList.add("fa", "fa-times-circle")
             listElement.appendChild(listElementClose)
             tags.appendChild(listElement)
-            search()
+            search() // Appel de la fonction de recherche pour filtrer les recettes en fonction des ustensiles sélectionnés
 
-            // Evènement filtrant les options de la liste déroulante en fonction de la saisie de l'input
+            // Gestion de l'événement de clic pour supprimer l'ustensile sélectionné
             listElement.addEventListener('click', () => {
                 selectedUstensiles = selectedUstensiles
                     .filter(selectedUstensil => selectedUstensil !== ustensil)
                 listElement.remove()
-                search()
+                search() // Réexécution de la fonction de recherche pour mettre à jour les recettes affichées
             })
         },
         // Gestion de l'ouverture Listbox, faisant en sorte de ne permettre l'affichage que d'une seule liste déroulante à la fois
@@ -194,36 +228,33 @@ function displayUstensilsSelect() {
         }
     )
     selects.push(select)
+    // Ajout de la liste d'ustensiles d'appareils au DOM
     const triIngredients = document.querySelector('.tri-ustensiles')
     triIngredients.appendChild(select.render())
 }
 
 
-/* Algorithme de filtrage des recettes (boucle for) - Input principal - Titre et description */
+/* Algorithme de filtrage des recettes - Input principal - Titre et description */
 // Sélection de l'élément input et ajout d'un gestionnaire d'événement de saisie
 const searchBarInput = document.getElementById('searchBar-input');
 searchBarInput.addEventListener('input', search);
 
 // Fonction générique prenant une recette en paramètre et effectuant une recherche basée sur une entrée de recherche
 function searchByInput(recipe) {
-    // Étape 1 : Récupérer l'entrée de recherche 
+    // Récupérer l'entrée de recherche en vérifiant que la saisie soit < 3
     const searchInput = searchBarInput.value;
-
     if(searchInput.length < 3){
         return true
     }
-
-    // Étape 2 : Convertir l'entrée de recherche en minuscules
+    // Convertir l'entrée de recherche en minuscules
     const searchTerm = searchInput.toLowerCase();
-
     // Convertir le titre de la recette et la description de la recette en minuscules
     const recipeTitle = recipe.name.toLowerCase();
     const recipeDescription = recipe.description.toLowerCase();
     const recipeIngredients = recipe
         .ingredients
         .filter(({ingredient}) => ingredient.toLowerCase().includes(searchTerm))
-
-
+        
     // Si le mot clé est inclus dans le titre ou la description de la recette, retourner true
     return recipeTitle.includes(searchTerm)
         || recipeDescription.includes(searchTerm)

@@ -1,32 +1,38 @@
-// Class générant les fonctionnalités de filtrage des listboxs 
+// Classe générant les fonctionnalités de filtrage pour les listboxs
 class Select {
     constructor(data, type, name, placeholder, className, onClickElement, onOpened) {
-        this.data = data
-        this.filteredData = data
-        this.type = type
-        this.name = name
-        this.placeholder = placeholder
-        this.onClickElement = onClickElement
-        this.onOpened = onOpened;
-        this.isOpened = false
-        this.className = className;
+        // Initialisation des propriétés de l'objet
+        this.data = data; // Données brutes
+        this.filteredData = data; // Données filtrées (initialement identiques aux données brutes)
+        this.type = type; // Type de la liste (par exemple, "ingredients", "appliances", ou "ustensils")
+        this.name = name; // Nom de la liste (par exemple, "ingredient-list", "appliance-list", ou "ustensil-list")
+        this.placeholder = placeholder; // Texte de l'élément de la liste servant de placeholder
+        this.onClickElement = onClickElement; // Fonction de rappel à appeler lorsqu'un élément est cliqué dans la liste
+        this.onOpened = onOpened; // Fonction de rappel à appeler lorsqu'une liste est ouverte (déroulée)
+        this.isOpened = false; // Indicateur pour savoir si la liste est actuellement ouverte (déroulée) ou non
+        this.className = className; // Classe CSS à appliquer à la liste pour le style
     }
 
     // Méthode créant la liste d'options déroulante des listboxs
     createListOptions() {
-        const elements = document.createElement('ul')
-        elements.classList.add('listbox-options')
-        this.filteredData.forEach(element => {
-            const li = document.createElement('li')
-            li.innerText = element
-            elements.appendChild(li)
+    // Création d'un élément <ul> pour contenir les options de la liste déroulante
+    const elements = document.createElement('ul');
+    elements.classList.add('listbox-options');
 
-            li.addEventListener('click', () => {
-                this.onClickElement(element)
-            })
-        })
-        return elements
-    }
+    // Itération sur les éléments filtrés pour créer les options de la liste
+    this.filteredData.forEach(element => {
+        // Création d'un élément <li> pour chaque élément de la liste
+        const li = document.createElement('li');
+        li.innerText = element;
+        elements.appendChild(li);
+        li.addEventListener('click', () => {
+            // Appel de la fonction de rappel 'onClickElement' avec l'élément cliqué en tant qu'argument
+            this.onClickElement(element);
+        });
+    });
+    // Renvoi de l'élément <ul> contenant les options de la liste déroulante
+    return elements;
+}
 
     // Gestion de la fermeture de la liste d'options déroulante des listboxs
     close() {
@@ -47,19 +53,21 @@ class Select {
         this.isOpened = true
     }
 
-    setData(data){
-        this.data = data
-        this.filteredData = data
-
-        this.elements = this.createListOptions()
-
-        const listboxOptions = document.querySelector(`.${this.className} .listbox-options`)
-        listboxOptions.remove()
-
-        const divSelect = document.querySelector(`.${this.className} .listbox-div`)
-        divSelect.appendChild(this.elements)
-
-        if(this.isOpened){
+    // Mise à jour des données brutes et des données filtrées avec les nouvelles données fournies
+    setData(data) {
+        this.data = data;
+        this.filteredData = data;
+    
+        // Création des éléments de la liste déroulante avec les nouvelles données
+        this.elements = this.createListOptions();
+        // Suppression des anciennes options de la liste déroulante
+        const listboxOptions = document.querySelector(`.${this.className} .listbox-options`);
+        listboxOptions.remove();
+        // Ajout des nouvelles options de la liste déroulante au conteneur (divSelect)
+        const divSelect = document.querySelector(`.${this.className} .listbox-div`);
+        divSelect.appendChild(this.elements);
+        // Si la liste déroulante était ouverte (déroulée) avant de mettre à jour les données, la réouvrir
+        if (this.isOpened) {
             this.open();
         }
     }
@@ -92,14 +100,13 @@ class Select {
         this.chevron.classList.add("fa", "fa-solid", "fa-chevron-down")
         button.appendChild(this.chevron)
 
-            
+        // Création des options de la liste déroulante 
         this.elements = this.createListOptions()
 
         // Fonction gérant le comportement d'ouverture et de fermeture de la liste déroulante d'options
         this.chevron.addEventListener('click', () => {
             if (this.isOpened) {
                 this.close()
-                //divSelect.style.width = '200%'; // Agrandissement de la div
             } else {
                 this.open()
             }
@@ -114,10 +121,10 @@ class Select {
             divSelect.appendChild(this.elements)
             this.elements.style.display = "block";
         })
-
+        // Ajout des éléments créés au conteneur principal
         divSelect.appendChild(button)
         divSelect.appendChild(this.elements)
-
+        // Renvoi du conteneur principal Listbox
         return divSelect
     }
 }

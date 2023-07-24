@@ -8,7 +8,6 @@ function recipeFactory(recipe) {
         card.classList.add('card');
 
         const link = document.createElement('a');
-        //link.setAttribute('href', '#');
         card.appendChild(link);
 
         const img = document.createElement('div');
@@ -48,36 +47,40 @@ function recipeFactory(recipe) {
         ingredientsList.classList.add('card-ingredientsList');
         main.appendChild(ingredientsList);
 
+        // Itération sur chaque ingrédient pour créer les éléments <li> de la liste des ingrédients
         ingredients.forEach((ingredient) => {
             const ingredientsLine = document.createElement('li');
             ingredientsLine.classList.add('card-ingredient');
 
+            // Création d'un élément <p> pour afficher le nom de l'ingrédient
             const ingredientsItem = document.createElement('p');
             ingredientsItem.textContent = `${ingredient['ingredient']}`;
-            ingredientsLine.appendChild(ingredientsItem)
+            ingredientsLine.appendChild(ingredientsItem);
 
-            const ingredientsQty = document.createElement('span')
-            // Cas de figure où la liste d'ingrédients contient une unité en plus de la quantité
-            if (('ingredient' in ingredient) & ('quantity' in ingredient) & ('unit' in ingredient)) {
-				ingredientsQty.textContent = ` : ${ingredient['quantity']} ${ingredient['unit']}`
-            // Cas de figure où la liste d'ingrédients ne contient qu'une quantité
-			} else if (('ingredient' in ingredient) & ('quantity' in ingredient)) {
-				ingredientsQty.textContent = ` : ${ingredient['quantity']}`
-			}
+            // Création d'un élément <span> pour afficher la quantité de l'ingrédient (si disponible)
+            const ingredientsQty = document.createElement('span');
+            // Vérification de la disponibilité de la quantité et de l'unité de mesure de l'ingrédient
+            if ('ingredient' in ingredient && 'quantity' in ingredient && 'unit' in ingredient) {
+                // Cas de figure où la liste d'ingrédients contient une quantité ET une unité de mesure
+                ingredientsQty.textContent = ` : ${ingredient['quantity']} ${ingredient['unit']}`;
+            } else if ('ingredient' in ingredient && 'quantity' in ingredient) {
+                // Cas de figure où la liste d'ingrédients contient UNIQUEMENT une quantité
+                ingredientsQty.textContent = ` : ${ingredient['quantity']}`;
+            }
             ingredientsItem.appendChild(ingredientsQty);
             ingredientsList.appendChild(ingredientsLine);
+        });
 
-        })
-
+        // Création d'un élément <p> pour afficher la description de la recette
         const descriptionText = document.createElement('p');
         descriptionText.classList.add('card-description');
         descriptionText.textContent = description;
         main.appendChild(descriptionText);
-        
-        
 
-        return (card);
+        // Renvoi de l'élément <article> représentant la carte de recette complétée
+        return card;
     }
 
+    // Renvoi d'un objet contenant uniquement la fonction 'getRecipesCardDOM' pour empêcher l'accès aux autres variables locales
     return { getRecipesCardDOM };
 }
